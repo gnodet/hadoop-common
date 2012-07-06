@@ -204,8 +204,7 @@ public class UserGroupInformation {
                                          HADOOP_SECURITY_AUTHENTICATION + 
                                          " of " + value);
     }
-    value = conf.get(HADOOP_SECURITY_FORCE_LOGIN_USER);
-    useLoginUser = Boolean.parseBoolean(value);
+    useLoginUser = conf.getBoolean(HADOOP_SECURITY_FORCE_LOGIN_USER, false);
     // If we haven't set up testing groups, use the configuration to find it
     if (!(groups instanceof TestingGroups)) {
       groups = Groups.getUserToGroupsMappingService(conf);
