@@ -949,9 +949,11 @@ public class TrackerDistributedCacheManager {
         } catch (IOException e) {
           LOG.error("Exception in DistributedCache CleanupThread.", e);
         } catch(InterruptedException e) {
-          LOG.info("Cleanup...",e); 
-          //To force us to exit cleanly
-          running = false;
+          if (running) {
+            LOG.info("Cleanup...",e);
+            //To force us to exit cleanly
+            running = false;
+          }
         } catch (Throwable t) {
           exitTaskTracker(t);
         }

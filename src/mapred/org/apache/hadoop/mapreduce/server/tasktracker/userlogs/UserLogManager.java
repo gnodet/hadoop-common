@@ -64,6 +64,8 @@ public class UserLogManager {
       while (true) {
         try {
           monitor();
+        } catch (InterruptedException e) {
+          return;
         } catch (Exception e) {
           LOG.warn("Exception while monitoring user log events", e);
         }
@@ -125,6 +127,11 @@ public class UserLogManager {
   public void start() {
     userLogCleaner.start();
     monitorLogEvents.start();
+  }
+
+  public void stop() {
+      userLogCleaner.interrupt();
+      monitorLogEvents.interrupt();
   }
 
   protected void monitor() throws Exception {

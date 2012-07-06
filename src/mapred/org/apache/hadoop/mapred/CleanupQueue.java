@@ -29,16 +29,22 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.security.UserGroupInformation;
 
-class CleanupQueue {
+public class CleanupQueue {
 
   public static final Log LOG =
     LogFactory.getLog(CleanupQueue.class);
 
-  private static final PathCleanupThread cleanupThread =
-    new PathCleanupThread();
+  private PathCleanupThread cleanupThread;
   private static final CleanupQueue inst = new CleanupQueue();
 
   public static CleanupQueue getInstance() { return inst; }
+
+  public synchronized void stop() {
+      if (cleanupThread != null) {
+        cleanupThread.interrupt();
+        cleanupThread = null;
+      }
+  }
 
   /**
    * Create a singleton path-clean-up queue. It can be used to delete
@@ -91,7 +97,10 @@ class CleanupQueue {
   /**
    * Adds the paths to the queue of paths to be deleted by cleanupThread.
    */
-  public void addToQueue(PathDeletionContext... contexts) {
+  public synchronized void addToQueue(PathDeletionContext... contexts) {
+    if (cleanupThread == null) {
+        cleanupThread = new PathCleanupThread();
+    }
     cleanupThread.addToQueue(contexts);
   }
 

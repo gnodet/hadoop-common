@@ -443,6 +443,8 @@ public class TaskTracker implements MRConstants, TaskUmbilicalProtocol,
                 LOG.error("Non-delete action given to cleanup thread: "
                           + action);
               }
+            } catch (InterruptedException e) {
+              return;
             } catch (Throwable except) {
               LOG.warn(StringUtils.stringifyException(except));
             }
@@ -1365,6 +1367,8 @@ public class TaskTracker implements MRConstants, TaskUmbilicalProtocol,
     this.mapLauncher.interrupt();
     this.reduceLauncher.interrupt();
 
+    this.taskCleanupThread.interrupt();
+
     this.distributedCacheManager.stopCleanupThread();
     jvmManager.stop();
     
@@ -1393,6 +1397,7 @@ public class TaskTracker implements MRConstants, TaskUmbilicalProtocol,
       jettyBugMonitor.shutdown();
       jettyBugMonitor = null;
     }
+    userLogManager.stop();
   }
 
   /**

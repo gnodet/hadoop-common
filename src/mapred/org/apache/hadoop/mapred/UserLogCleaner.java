@@ -92,6 +92,8 @@ public class UserLogCleaner extends Thread {
         // sleep
         Thread.sleep(threadSleepTime);
         processCompletedJobs();
+      } catch (InterruptedException e) {
+        return;
       } catch (Throwable e) {
         LOG.warn(getClass().getSimpleName()
             + " encountered an exception while monitoring :", e);

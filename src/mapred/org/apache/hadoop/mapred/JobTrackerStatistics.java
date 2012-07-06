@@ -37,6 +37,10 @@ class JobTrackerStatistics {
     collector.start();
   }
 
+  void stop() {
+    collector.stop();
+  }
+
   synchronized void taskTrackerAdded(String name) {
     TaskTrackerStat stat = ttStats.get(name);
     if(stat == null) {

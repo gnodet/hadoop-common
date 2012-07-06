@@ -2676,6 +2676,8 @@ public class JobTracker implements MRConstants, InterTrackerProtocol,
         LOG.warn("Exception shutting down Job History server", ex);
       }
   }
+    statistics.stop();
+    secretManager.stopThreads();
     DelegationTokenRenewal.close();
     LOG.info("stopped all jobtracker services");
     return;

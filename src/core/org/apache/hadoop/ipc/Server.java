@@ -558,8 +558,11 @@ public abstract class Server {
     synchronized void doStop() {
       if (selector != null) {
         selector.wakeup();
-        Thread.yield();
       }
+      for (Reader r : readers) {
+        r.readSelector.wakeup();
+      }
+      Thread.yield();
       if (acceptChannel != null) {
         try {
           acceptChannel.socket().close();

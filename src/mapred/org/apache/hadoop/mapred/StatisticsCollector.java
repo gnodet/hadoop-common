@@ -57,6 +57,7 @@ class StatisticsCollector {
 
   private final int period;
   private boolean started;
+  private Timer timer;
   
   private final Map<TimeWindow, StatUpdater> updaters = 
     new LinkedHashMap<TimeWindow, StatUpdater>();
@@ -74,7 +75,7 @@ class StatisticsCollector {
     if (started) {
       return;
     }
-    Timer timer = new Timer("Timer thread for monitoring ", true);
+    timer = new Timer("Timer thread for monitoring ", true);
     TimerTask task = new TimerTask() {
       public void run() {
         update();
@@ -83,6 +84,11 @@ class StatisticsCollector {
     long millis = period * 1000;
     timer.scheduleAtFixedRate(task, millis, millis);
     started = true;
+  }
+
+  synchronized void stop() {
+    timer.cancel();
+    started = false;
   }
 
   protected synchronized void update() {

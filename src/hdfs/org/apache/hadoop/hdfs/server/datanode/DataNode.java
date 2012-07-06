@@ -734,6 +734,10 @@ public class DataNode extends Configured
    * Otherwise, deadlock might occur.
    */
   public void shutdown() {
+    if (!this.shouldRun) {
+      return;
+    }
+    this.shouldRun = false;
     this.unRegisterMXBean();
     if (infoServer != null) {
       try {
@@ -745,7 +749,6 @@ public class DataNode extends Configured
     if (ipcServer != null) {
       ipcServer.stop();
     }
-    this.shouldRun = false;
     if (dataXceiverServer != null) {
       ((DataXceiverServer) this.dataXceiverServer.getRunnable()).kill();
       this.dataXceiverServer.interrupt();
