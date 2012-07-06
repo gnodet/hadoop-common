@@ -70,6 +70,8 @@ public class UserGroupInformation {
   private static final float TICKET_RENEW_WINDOW = 0.80f;
   static final String HADOOP_USER_NAME = "HADOOP_USER_NAME";
   
+  static final String HADOOP_SECURITY_FORCE_LOGIN_USER = "hadoop.security.force.login.user";
+
   /**
    * A login module that looks at the Kerberos, Unix, or Windows principal and
    * adds the corresponding UserName.
@@ -163,6 +165,8 @@ public class UserGroupInformation {
   private static boolean isInitialized = false;
   /** Should we use Kerberos configuration? */
   private static boolean useKerberos;
+  /** Should we always use the user login */
+  private static boolean useLoginUser;
   /** Server-side groups fetching service */
   private static Groups groups;
   /** The configuration to use */
@@ -200,6 +204,8 @@ public class UserGroupInformation {
                                          HADOOP_SECURITY_AUTHENTICATION + 
                                          " of " + value);
     }
+    value = conf.get(HADOOP_SECURITY_FORCE_LOGIN_USER);
+    useLoginUser = Boolean.parseBoolean(value);
     // If we haven't set up testing groups, use the configuration to find it
     if (!(groups instanceof TestingGroups)) {
       groups = Groups.getUserToGroupsMappingService(conf);
@@ -449,7 +455,7 @@ public class UserGroupInformation {
   static UserGroupInformation getCurrentUser() throws IOException {
     AccessControlContext context = AccessController.getContext();
     Subject subject = Subject.getSubject(context);
-    return subject == null ? getLoginUser() : new UserGroupInformation(subject);
+    return subject == null || useLoginUser ? getLoginUser() : new UserGroupInformation(subject);
   }
 
   /**
