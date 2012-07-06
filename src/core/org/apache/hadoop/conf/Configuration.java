@@ -208,6 +208,20 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       classLoader = Configuration.class.getClassLoader();
     }
   }
+
+  private static ClassLoader defaultClassLoader;
+  private static Properties defaultProperties;
+  public static synchronized void setConfigurations(ClassLoader classLoader, Properties properties) {
+    defaultClassLoader = classLoader;
+    defaultProperties = properties;
+    for(Configuration conf : REGISTRY.keySet()) {
+      if(conf.loadDefaults) {
+        conf.classLoader = classLoader;
+        conf.overlay = (Properties) properties.clone();
+        conf.reloadConfiguration();
+      }
+    }
+  }
   
   /** A new configuration. */
   public Configuration() {
@@ -225,6 +239,14 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     this.loadDefaults = loadDefaults;
     if (LOG.isDebugEnabled()) {
       LOG.debug(StringUtils.stringifyException(new IOException("config()")));
+    }
+    if (loadDefaults) {
+      if (defaultClassLoader != null) {
+        classLoader = defaultClassLoader;
+      }
+      if (defaultProperties != null) {
+        overlay = (Properties) defaultProperties.clone();
+      }
     }
     synchronized(Configuration.class) {
       REGISTRY.put(this, null);

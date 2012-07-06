@@ -50,11 +50,12 @@
     <conf name="kfs" description="dependencies for KFS file system support"/>
     <conf name="ftp" description="dependencies for workign with FTP filesytems"
               extends="mandatory"/>
-   <conf name="jetty" description="Jetty provides the in-VM HTTP daemon" extends="commons-logging"/>
+    <conf name="jetty" description="Jetty provides the in-VM HTTP daemon" extends="commons-logging"/>
+    <conf name="osgi" description="OSGi dependencies"/>
 
     <!--Private configurations. -->
 
-    <conf name="common" visibility="private" extends="runtime,mandatory,httpclient,ftp,jetty"
+    <conf name="common" visibility="private" extends="runtime,mandatory,httpclient,ftp,jetty,osgi"
 		      description="common artifacts"/>
     <conf name="javadoc" visibility="private" description="artiracts required while performing doc generation"
       extends="common,mandatory,jetty,lucene"/>
@@ -236,6 +237,16 @@
     name="kfs"
     rev="${kfs.version}"
     conf="kfs->default"/>-->
+
+    <!--Configurtion: osgi -->
+    <dependency org="org.osgi"
+	  name="org.osgi.core"
+	  rev="${osgi.version}"
+	  conf="osgi->default"/>
+    <dependency org="org.osgi"
+	  name="org.osgi.compendium"
+	  rev="${osgi.version}"
+	  conf="osgi->default"/>
 
     <!--Configuration: test -->
 

@@ -63,6 +63,7 @@
   <property name="c++.libhdfs.src" value="${c++.src}/libhdfs"/>
   <property name="librecordio.src" value="${c++.src}/librecordio"/>
   <property name="tools.src" value="${basedir}/src/tools"/>
+  <property name="osgi.src.dir" value="${src.dir}/osgi"/> 
 
   <property name="package.prefix" value="/usr"/>
   <property name="package.conf.dir" value="/etc/hadoop"/>
@@ -607,6 +608,22 @@
     </copy>
   </target>
 
+  <target name="compile-osgi-classes" depends="compile-mapred-classes">
+    <javac
+     encoding="${build.encoding}"
+     srcdir="${osgi.src.dir}"
+     includes="org/apache/hadoop/**/*.java"
+     destdir="${build.classes}"
+     debug="${javac.debug}"
+     optimize="${javac.optimize}"
+     target="${javac.version}"
+     source="${javac.version}"
+     deprecation="${javac.deprecation}">
+      <compilerarg line="${javac.args} ${javac.args.warnings}" />
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
   <target name="compile-native">
     <antcall target="compile-core-native">
       <param name="compile.native" value="true"/>
@@ -698,7 +715,7 @@
 
   <target name="compile-core"
           depends="clover,compile-core-classes,compile-mapred-classes,
-  	compile-hdfs-classes,compile-core-native,compile-c++" 
+  	compile-hdfs-classes,compile-osgi-classes,compile-core-native,compile-c++"
   	description="Compile core only">
   </target>
 
