@@ -28,7 +28,7 @@
   <version>3.0.0-SNAPSHOT</version>
   <description>Apache Hadoop Common</description>
   <name>Apache Hadoop Common</name>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
 
   <properties>
     <snappy.prefix>/usr/local</snappy.prefix>
@@ -302,6 +302,58 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Export-Package>
+              org.apache.hadoop*;version=${project.version}
+            </Export-Package>
+            <Import-Package>
+              com.google.common*,
+              com.google.protobuf*,
+              com.jcraft*,
+              jdiff,
+              org.apache.avro*,
+              org.apache.commons.codec*,
+              org.apache.commons.configuration*,
+              org.apache.commons.httpclient*,
+              org.apache.commons.io*,
+              org.apache.commons.lang*,
+              org.apache.commons.math*,
+              org.apache.commons.net*,
+              org.apache.zookeeper*,
+              org.codehaus.jackson*,
+              org.jets3t.service*,
+              org.mortbay*,
+              javax.crypto*,
+              javax.management*,
+              javax.security*,
+              javax.servlet*,
+              javax.xml*,
+              javax.naming*,
+              javax.net*,
+              org.w3c.dom*,
+              org.xml.sax*,
+              com.sun.jersey*,
+              com.sun.javadoc;resolution:=optional,
+              com.sun.jndi.ldap;resolution:=optional,
+              com.sun.tools*;resolution:=optional,
+              org.apache.commons.cli*;resolution:=optional,
+              org.apache.commons.logging*;resolution:=optional,
+              org.apache.log4j*;resolution:=optional,
+              org.apache.tools.ant*;resolution:=optional,
+              org.ietf.jgss;resolution:=optional,
+              org.kosmix.kosmosfs*;resolution:=optional,
+              org.slf4j;resolution:=optional,
+              org.znerd.xmlenc;resolution:=optional,
+              sun.misc;resolution:=optional,
+              sun.net*;resolution:=optional
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
