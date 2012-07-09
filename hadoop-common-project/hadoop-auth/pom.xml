@@ -113,12 +113,13 @@
               org.apache.hadoop*;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-                javax.security.auth*,
-                javax.servlet*,
-                org.apache.commons.codec*,
-                org.apache.hadoop*,
-                org.ietf.jgss*,
-                org.slf4j*
+              javax.security*,
+              javax.servlet*,
+              jdiff;version="[1.0,2)",
+              org.apache.commons.codec*;version="[1.4,2)",
+              org.ietf.jgss;resolution:=optional,
+              com.sun*;resolution:=optional,
+              org.slf4j;resolution:=optional
             </Import-Package>
           </instructions>
         </configuration>
