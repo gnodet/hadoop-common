@@ -28,7 +28,7 @@
   <version>3.0.0-SNAPSHOT</version>
   <description>Apache Hadoop Common</description>
   <name>Apache Hadoop Common</name>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <properties>
     <snappy.prefix>/usr/local</snappy.prefix>
@@ -305,16 +305,24 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
+	    <executions>
+	      <execution>
+	        <id>bundle-manifest</id>
+	        <phase>process-classes</phase>
+	        <goals>
+	          <goal>manifest</goal>
+	        </goals>
+	      </execution>
+	    </executions>
         <configuration>
           <instructions>
             <Export-Package>
-              org.apache.hadoop*;version=${project.version}
+              org.apache.hadoop*;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
               com.google.common*,
               com.google.protobuf*,
               com.jcraft*,
-              jdiff,
               org.apache.avro*,
               org.apache.commons.codec*,
               org.apache.commons.configuration*,
@@ -323,6 +331,7 @@
               org.apache.commons.lang*,
               org.apache.commons.math*,
               org.apache.commons.net*,
+              org.apache.hadoop.*,
               org.apache.zookeeper*,
               org.codehaus.jackson*,
               org.jets3t.service*,
@@ -354,6 +363,15 @@
           </instructions>
         </configuration>
       </plugin>
+  	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-jar-plugin</artifactId>
+	    <configuration>
+	      <archive>
+	        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+	      </archive>
+	    </configuration>
+	  </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
