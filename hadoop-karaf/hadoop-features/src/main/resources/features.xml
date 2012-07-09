@@ -23,4 +23,12 @@
         <bundle>mvn:org.apache.hadoop/hadoop-annotations/${project.version}</bundle>
     </feature>
 
+    <feature name="hadoop-common" version="${project.version}" resolver="(obr)">
+        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.guava/${guava.bundle.version}</bundle>
+        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.protobuf-java/${protobuf.bundle.version}</bundle>
+        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsch/${jsch.bundle.version}</bundle>
+        <bundle dependency="true">mvn:com.sun.jersey/jersey-core/${jersey.version}</bundle>
+        <bundle>mvn:org.apache.hadoop/hadoop-common/${project.version}</bundle>
+    </feature>
+
 </features>

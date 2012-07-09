@@ -33,7 +33,10 @@
     <packaging>pom</packaging>
 
     <properties>
+        <guava.bundle.version>11.0.2_1-SNAPSHOT</guava.bundle.version>
         <jdiff.bundle.version>1.0.9_1</jdiff.bundle.version>
+        <jsch.bundle.version>0.1.42_3</jsch.bundle.version>
+        <protobuf.bundle.version>2.4.0a_1</protobuf.bundle.version>
     </properties>
 
     <build>
