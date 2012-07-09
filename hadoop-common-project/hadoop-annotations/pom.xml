@@ -58,7 +58,8 @@
               org.apache.hadoop*;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              *;resolution:=optional
+              jdiff;version="[1.0,2)",
+              com.sun*;resolution:=optional
             </Import-Package>
           </instructions>
         </configuration>
